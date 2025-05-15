@@ -1,6 +1,7 @@
 # vim: set expandtab shiftwidth=4 softtabstop=4:
 
 from chimerax.core.toolshed import BundleAPI
+from chimerax.cmd_line.tool import _HistoryDialog
 
 class _ShiftUpAPI(BundleAPI):
     """API for the ShiftUp bundle."""
@@ -36,10 +37,15 @@ class _ShiftUpAPI(BundleAPI):
         """Initialize the bundle when it is loaded."""
         session.logger.info("ShiftUp: initialize")
 
+        from . import cmd
+        # Monkey patch the _HistoryDialog up and down methods
+        _HistoryDialog.up = cmd.shiftUp
+        _HistoryDialog.down = cmd.shiftDown
+
     @staticmethod
     def finish(session, bundle_info):
         """Clean up when the bundle is unloaded."""
         session.logger.info("ShiftUp: finish unloading")
 
 # Create the bundle_api object that ChimeraX expects
-bundle_api = _ShiftUpAPI() 
+bundle_api = _ShiftUpAPI()
