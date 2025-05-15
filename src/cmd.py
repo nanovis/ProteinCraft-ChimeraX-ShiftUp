@@ -5,14 +5,6 @@ from chimerax.cmd_line.tool import _HistoryDialog
 _original_up = _HistoryDialog.up
 _original_down = _HistoryDialog.down
 
-def hello(session):
-    """Print hello world message"""
-    session.logger.info("Hello from ShiftUp plugin!")
-
-hello_desc = CmdDesc(
-    synopsis='Print hello world message'
-)
-
 def shiftUp(self, shifted):
     """Monkey patch for _HistoryDialog.up to implement shift-up functionality"""
     sels = self.listbox.selectedIndexes()

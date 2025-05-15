@@ -19,10 +19,7 @@ class _ShiftUpAPI(BundleAPI):
         # in bundle_info.xml.
 
         from . import cmd
-        if ci.name == "shiftup hello":
-            func = cmd.hello
-            desc = cmd.hello_desc
-        elif ci.name == "shiftup":
+        if ci.name == "shiftup":
             func = cmd.enable
             desc = cmd.enable_desc
         else:

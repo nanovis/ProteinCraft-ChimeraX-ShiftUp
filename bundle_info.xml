@@ -40,8 +40,6 @@ Shift up to cycle through the whole typed text in the command line history.
     <PythonClassifier>Development Status :: 1 - Alpha</PythonClassifier>
     <PythonClassifier>License :: Academic Free License</PythonClassifier>
     <!-- ChimeraX classifiers describe supplied functionality -->
-    <ChimeraXClassifier>ChimeraX :: Command :: shiftup hello :: General ::
-      Print hello world message</ChimeraXClassifier>
     <ChimeraXClassifier>ChimeraX :: Command :: shiftup :: General ::
       Enable or disable shift-up functionality</ChimeraXClassifier>
   </Classifiers>
