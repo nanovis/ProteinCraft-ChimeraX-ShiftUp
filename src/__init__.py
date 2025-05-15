@@ -1,7 +1,6 @@
 # vim: set expandtab shiftwidth=4 softtabstop=4:
 
 from chimerax.core.toolshed import BundleAPI
-from chimerax.cmd_line.tool import _HistoryDialog
 
 class _ShiftUpAPI(BundleAPI):
     """API for the ShiftUp bundle."""
@@ -23,6 +22,9 @@ class _ShiftUpAPI(BundleAPI):
         if ci.name == "shiftup hello":
             func = cmd.hello
             desc = cmd.hello_desc
+        elif ci.name == "shiftup":
+            func = cmd.enable
+            desc = cmd.enable_desc
         else:
             raise ValueError(f"trying to register unknown command: {ci.name}")
 
@@ -35,17 +37,18 @@ class _ShiftUpAPI(BundleAPI):
     @staticmethod
     def initialize(session, bundle_info):
         """Initialize the bundle when it is loaded."""
-        session.logger.info("ShiftUp: initialize")
-
+        
+        # Enable shift-up functionality by default
         from . import cmd
-        # Monkey patch the _HistoryDialog up and down methods
-        _HistoryDialog.up = cmd.shiftUp
-        _HistoryDialog.down = cmd.shiftDown
+        cmd.enable(session, True)
 
     @staticmethod
     def finish(session, bundle_info):
         """Clean up when the bundle is unloaded."""
-        session.logger.info("ShiftUp: finish unloading")
+        
+        # Restore original functionality when bundle is unloaded
+        from . import cmd
+        cmd.enable(session, False)
 
 # Create the bundle_api object that ChimeraX expects
 bundle_api = _ShiftUpAPI()

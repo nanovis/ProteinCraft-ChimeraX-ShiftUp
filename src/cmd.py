@@ -1,5 +1,9 @@
-from chimerax.core.commands import CmdDesc, register, NoArg
+from chimerax.core.commands import CmdDesc, register, NoArg, BoolArg
 from chimerax.cmd_line.tool import _HistoryDialog
+
+# Store original functions
+_original_up = _HistoryDialog.up
+_original_down = _HistoryDialog.down
 
 def hello(session):
     """Print hello world message"""
@@ -7,7 +11,7 @@ def hello(session):
 
 hello_desc = CmdDesc(
     synopsis='Print hello world message'
-) 
+)
 
 def shiftUp(self, shifted):
     """Monkey patch for _HistoryDialog.up to implement shift-up functionality"""
@@ -80,3 +84,19 @@ def shiftDown(self, shifted):
     self.controller.cmd_replace(new_text)
     if orig_text == new_text:
         self.down(shifted)
+
+def enable(session, enabled):
+    """Enable or disable shift-up functionality"""
+    if enabled:
+        _HistoryDialog.up = shiftUp
+        _HistoryDialog.down = shiftDown
+        session.logger.info("ShiftUp functionality enabled")
+    else:
+        _HistoryDialog.up = _original_up
+        _HistoryDialog.down = _original_down
+        session.logger.info("ShiftUp functionality disabled")
+
+enable_desc = CmdDesc(
+    required=[('enabled', BoolArg)],
+    synopsis='Enable or disable shift-up functionality'
+)
